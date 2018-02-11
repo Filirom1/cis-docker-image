@@ -2,6 +2,7 @@
 
 ## Usage
 
+```shell
 [root@localhost cis2]# for i in cis-*; do echo -e "\033[31;1;4;5;7m$i\033[0m"; ./$i nginx; done
 cis-4.1
 Super user found ''
@@ -17,3 +18,4 @@ cis-4.9
 cis-5.12
 Writes detected into directories:
 /run /var/cache/nginx
+```
