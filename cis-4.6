@@ -1,0 +1,8 @@
+#!/bin/bash
+
+HEALTHCHECK=$(docker inspect --type image $1 |grep Healthcheck|head -n 1)
+
+if [ -z "$HEALTHCHECK"  ]; then
+  echo "HEALTHCHECK not found"
+  exit 1
+fi

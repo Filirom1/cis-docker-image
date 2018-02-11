@@ -1,0 +1,8 @@
+#!/bin/bash
+
+CMD=$(docker history $1 --no-trunc |grep  "apt-get update\|yum update\|apk update"|grep -v install)
+
+if [ -n "$CMD" ]; then
+  echo $CMD
+  exit 1
+fi

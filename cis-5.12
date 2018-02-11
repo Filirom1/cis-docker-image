@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+docker rm -f sut >/dev/null 2>&1 || true
+docker run --name sut -d $1 >/dev/null 2>&1
+sleep 5
+DIFF="$(docker diff sut |grep -v "/run/secrets" |grep "^A"|sed 's/\(.*\)\/[^\/]*$/\1/g'|sed 's/^. //g'|sort|uniq)"
+VOLUMES=$(docker inspect sut |grep Destination|sed 's/.*": "\(.*\)".*/\1/g'|sort|uniq)
+
+UNIQ=$(comm -3 <(echo $DIFF) <(echo $VOLUMES))
+
+if [ -n "$UNIQ" ]; then
+  echo "Writes detected into directories: $UNIQ"
+  exit 30
+fi

@@ -1,0 +1,19 @@
+#!/bin/bash
+USER=$(docker inspect --type image $1|head -n 1|grep User|sed 's/.*": "\(.*\)".*/\1/g')
+
+function fail {
+  echo "Super user found '$USER'"
+  exit 50
+}
+
+if [ "$USER" == "" ]; then
+  fail
+fi
+
+if [ "$USER" == "0" ]; then
+  fail
+fi
+
+if [ "$USER" == "root" ]; then
+  fail
+fi

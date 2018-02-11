@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+if [ ! -f /usr/bin/bc ]; then
+  yum istall -y bc
+fi
+
+if [ ! -d $GOPATH/src/github.com/jgsqware/clairctl ]; then
+  git clone https://github.com/jgsqware/clairctl.git $GOPATH/src/github.com/jgsqware/clairctl
+fi
+
+cd $GOPATH/src/github.com/jgsqware/clairctl
+docker-compose up -d 2>/dev/null
+
+CVE=$(docker-compose exec clairctl clairctl analyze --local $1 |grep vulnerabilities |grep -v "0 vulnerabilities")
+
+if [ -n "$CVE" ]; then
+  echo "$CVE"
+  exit $(echo "$CVE"|sed "s/.*found \(.*\) vulnerabilities.*/\1/g" | paste -sd+ - |bc)
+fi
