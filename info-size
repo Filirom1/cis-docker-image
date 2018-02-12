@@ -1,0 +1,11 @@
+#!/bin/bash
+
+IMAGE_NAME=`echo $1|sed 's/:.*//g'`
+IMAGE_TAG=`echo $1|sed 's/.*://g'`
+
+if [ -z "$IMAGE_TAG" ]; then 
+  IMAGE_TAG=latest
+fi
+
+docker images |grep "^$IMAGE_NAME" |grep "$IMAGE_TAG" |awk '{print $(NF-1) " " $NF}'
+

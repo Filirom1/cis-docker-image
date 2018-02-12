@@ -1,0 +1,16 @@
+#!/bin/bash
+
+PKGS=$(docker run --entrypoint="" $1 rpm -qa 2>/dev/null |wc -l)
+if [ $PKGS != "0" ]; then
+  echo -e $PKGS
+fi
+
+PKGS=$(docker run --entrypoint="" $1 dpkg -l 2>/dev/null |wc -l)
+if [ $PKGS != "0" ]; then
+  echo -e $PKGS
+fi
+
+PKGS=$(docker run --entrypoint="" $1 apk info 2>/dev/null |wc -l)
+if [ $PKGS != "0" ]; then
+  echo -e $PKGS
+fi

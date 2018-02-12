@@ -1,0 +1,2 @@
+#!/bin/bash
+docker inspect --type image $1 |grep "Created"|sed 's/.*: "\(.*\)".*/\1/g'

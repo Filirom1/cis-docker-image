@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker run --entrypoint="" $1 cat /etc/os-release |grep "^NAME="|sed 's/.*="\(.*\)"/\1/g'
+
